@@ -24,4 +24,7 @@ public class PhoneBookManagement {
         return contacts;
     }
 
+    public Contact getContact(long id) {
+        return entityManager.find(Contact.class, id);
+    }
 }

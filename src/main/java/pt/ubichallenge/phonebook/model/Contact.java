@@ -16,7 +16,7 @@ import java.util.List;
 public class Contact implements Serializable{
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String name;
@@ -55,5 +55,19 @@ public class Contact implements Serializable{
 
     public void setPhones(List<Phone> phones) {
         this.phones = phones;
+    }
+
+    @Override
+    public String toString() {
+        String phonesString = "";
+        for (Phone phone: phones) {
+            phonesString += phone.toString();
+        }
+        return "Contact{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", address=" + address +
+                ", phones=" + phonesString +
+                '}';
     }
 }

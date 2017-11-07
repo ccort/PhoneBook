@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pt.ubichallenge.phonebook.model.Contact;
 import pt.ubichallenge.phonebook.persistence.PhoneBookManagement;
-import pt.ubichallenge.phonebook.util.PhoneBookUtils;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -31,9 +30,10 @@ public class PhoneBookService {
 
     @GET
     @Path("{id}")
-    public String getContact(@PathParam("id") String id){
-
-        return "Get {id} user yet to be implemented. Debug: " + id;
+    @Produces(MediaType.APPLICATION_JSON)
+    public Contact getContact(@PathParam("id") long id){
+        return managePhoneBook.getContact(id);
+        //return "Get {id} user yet to be implemented. Debug: " + id;
     }
 
     @DELETE
@@ -53,9 +53,9 @@ public class PhoneBookService {
 
     @POST
     //@Path("create_contact")
-    public String createNewContact(){
-        Contact contact = PhoneBookUtils.createSampleContact();
-
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String createNewContact(Contact contact){
+        logger.info(contact.toString());
         logger.info("Inserting contact...");
         managePhoneBook.addContact(contact);
         logger.info("Inserted!");
