@@ -1,32 +1,30 @@
 # PhoneBook
 
-Software used:
+## Software used:
 
-JDK 8
+**[JDK 8](http://www.oracle.com/technetwork/pt/java/javase/downloads/jdk8-downloads-2133151.html)**
 
-WildFly 11 as the Application Server (http://wildfly.org/downloads/)
+**[WildFly 11](http://wildfly.org/downloads/)** as the Application Server 
 
-Maven 3
+**[Apache Maven 3.5.2](https://maven.apache.org/download.cgi)** 
 
-PostgreSQL 10 (https://www.postgresql.org/download/) or another DBMS of your choosing
+**[JDBC Connector 9.4.1212 JDBC 42](https://jdbc.postgresql.org/download.html)**
 
-JDBC Connector 9.4.1212 JDBC 42: https://jdbc.postgresql.org/download.html 
+**[PostgreSQL 10](https://www.postgresql.org/download/)** or another DBMS of your choice
 
-IntelliJ Ultimate 2017 for development but the project should be run fine just with Maven
+**[IntelliJ Ultimate 2017](https://www.jetbrains.com/idea/download/)**  *(Optional)*  for development but the project should run fine just with Maven
 
-Postman to test the endpoints
+**[Postman](https://www.getpostman.com/)** for endoint testing
 
-Instuctions:
+## Instructions:
 
-Configure a Datasource of your choice in WildFly, in this example it's name is: java:/PostgresDSUbi
-(optionally you can use the default datasource of WildFly that uses H2:mem - java:jboss/datasources/ExampleDS but beware that any this datasource only stays in memory and never saves to disk)
+Configure a Datasource of your choice in WildFly; in this example its name is: **java:/PostgresDSUbi**
+(optionally you can use the default datasource of WildFly that uses **H2:mem - java:jboss/datasources/ExampleDS** but beware that this type of datasource is volatile; it only stays in the memory and is never saved to the disk)
 
-Endpoints:
+## Endpoints:
 
+### To run it:
 
-To run it: 
+Make sure that WildFly is executing, the datasource is configured and that the deployment is performed with the following args: `mvn wildfly:deploy -DskipTests=True` (tests are configured to run in IntelliJ only for the moment)
 
-Make sure WildFly is executing, the datasource is configured and: `mvn wildfly:deploy -DskipTests=True` (tests are configured to run in IntelliJ only for the moment)
-
-Undeploy: `mvn wildfly:undeploy`
-
+### Undeploy: Type:  `mvn wildfly:undeploy`
