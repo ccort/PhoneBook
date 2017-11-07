@@ -1,0 +1,84 @@
+{
+	"variables": [],
+	"info": {
+		"name": "PhoneBook",
+		"_postman_id": "5679480e-9df0-103a-0666-5bdafa4b24b0",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get All Contacts",
+			"request": {
+				"url": "http://localhost:8080/PhoneBook/ubi/phonebook/",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Contact by Id",
+			"request": {
+				"url": "http://localhost:8080/PhoneBook/ubi/phonebook/4",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Contact with Id",
+			"request": {
+				"url": "http://localhost:8080/PhoneBook/ubi/phonebook/2",
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Update Contact with Id",
+			"request": {
+				"url": "http://localhost:8080/PhoneBook/ubi/phonebook/5",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Putting UpdatedContact\",\n    \"address\": {\n        \"address\": \"Rua, Numero, Coimbra 9999-888\"\n    },\n    \"phones\": [\n        {\n            \"number\": \"910000088\"\n        },\n        {\n            \"number\": \"931112288\"\n        }\n    ]\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create New Contact",
+			"request": {
+				"url": "http://localhost:8080/PhoneBook/ubi/phonebook/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Posting NewContact\",\n    \"address\": {\n        \"address\": \"Rua, Numero, Coimbra 9999-777\"\n    },\n    \"phones\": [\n        {\n            \"number\": \"910000077\"\n        },\n        {\n            \"number\": \"931112277\"\n        }\n    ]\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

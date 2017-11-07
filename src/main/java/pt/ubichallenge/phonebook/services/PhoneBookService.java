@@ -33,21 +33,21 @@ public class PhoneBookService {
     @Produces(MediaType.APPLICATION_JSON)
     public Contact getContact(@PathParam("id") long id){
         return managePhoneBook.getContact(id);
-        //return "Get {id} user yet to be implemented. Debug: " + id;
     }
 
     @DELETE
     @Path("{id}")
-    public String deleteContact(@PathParam("id") String id){
-
-        return "Delete {id} user yet to be implemented. Debug: " + id;
+    public String deleteContact(@PathParam("id") long id){
+        return managePhoneBook.deleteContact(id);
     }
 
     @PUT
     @Path("{id}")
-    public String updateContact(@PathParam("id") String id){
-
-        return "Update {id} user yet to be implemented. Debug: " + id;
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String updateContact(@PathParam("id") long id, Contact updatedContact){
+        logger.info(updatedContact.toString());
+        return managePhoneBook.updateContact(id, updatedContact);
+        //return "Update {id} user yet to be implemented. Debug: " + id;
     }
 
 

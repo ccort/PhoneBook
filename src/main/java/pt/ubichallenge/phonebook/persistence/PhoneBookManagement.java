@@ -27,4 +27,27 @@ public class PhoneBookManagement {
     public Contact getContact(long id) {
         return entityManager.find(Contact.class, id);
     }
+
+    public String deleteContact(long id) {
+        Contact contact = getContact(id);
+        if(contact != null) {
+            entityManager.remove(contact);
+            return "Successful deletion.";
+        }
+        else {
+            return "Contact not found.";
+        }
+
+    }
+
+    public String updateContact(long id, Contact updatedContact) {
+        Contact contact = getContact(id);
+        if(updatedContact.getName() != null)
+            contact.setName(updatedContact.getName());
+        if(updatedContact.getAddress() != null)
+            contact.setAddress(updatedContact.getAddress());
+        if(updatedContact.getPhones() != null)
+            contact.setPhones(updatedContact.getPhones());
+        return "Update successful";
+    }
 }
