@@ -25,7 +25,8 @@ public class PhoneBookManagement {
     }
 
     public Contact getContact(long id) {
-        return entityManager.find(Contact.class, id);
+        Contact c = entityManager.find(Contact.class, id);
+        return c;
     }
 
     public String deleteContact(long id) {

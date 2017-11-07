@@ -1,5 +1,7 @@
 package pt.ubichallenge.phonebook.services;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.deploy.config.ClientConfig;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -22,6 +24,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
 import java.net.URI;
 import java.net.URL;
 
@@ -37,7 +40,7 @@ public class PhoneBookServiceTest {
     private URL base;
 
     private String endpoint = "ubi/phonebook";
-
+    private ObjectMapper mapper;
     @Deployment(testable = false)
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class, "test-phonebook.war")
@@ -49,6 +52,8 @@ public class PhoneBookServiceTest {
     @Before
     public void setUp() throws Exception{
         client = ClientBuilder.newClient();
+
+        mapper = new ObjectMapper();
     }
 
     @Test
@@ -60,11 +65,15 @@ public class PhoneBookServiceTest {
     }
     @Test
     public void getContact() throws Exception {
-        String id = "1";
+        String id = "4";
         target = client.target(URI.create(new URL(base, endpoint + "/" + id).toExternalForm()));
 
-        String r = target.request().get(String.class);
-        logger.info("DB: " + r);
+        String response = target.request().accept(MediaType.APPLICATION_JSON).get(String.class);
+        if(response != null) {
+            Contact contact = mapper.readValue(response, Contact.class);
+            logger.info(contact.toString());
+        }
+        logger.info("1: " + response);
     }
 
     @Test
@@ -78,18 +87,21 @@ public class PhoneBookServiceTest {
 
     @Test
     public void updateContact() throws Exception {
-        String id = "1";
+        String id = "3";
         target = client.target(URI.create(new URL(base, endpoint + "/" + id).toExternalForm()));
-
-        String r = target.request().put(Entity.text("2")).readEntity(String.class);
+        Contact contact = PhoneBookUtils.createSampleContact();
+        String contactJson = mapper.writeValueAsString(contact);
+        String r = target.request().put(Entity.json(contactJson)).readEntity(String.class);
         logger.info("DB: " + r);
     }
 
     @Test
     public void createNewContact() throws Exception {
         target = client.target(URI.create(new URL(base, endpoint).toExternalForm()));
+        Contact contact = PhoneBookUtils.createSampleContact();
+        String contactJson = mapper.writeValueAsString(contact);
 
-        String r = target.request().post(Entity.text("1")).readEntity(String.class);
+        String r = target.request().post(Entity.entity(contactJson,MediaType.APPLICATION_JSON)).readEntity(String.class);
         logger.info("DB: " + r);
     }
 }

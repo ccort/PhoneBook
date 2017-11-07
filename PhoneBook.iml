@@ -142,5 +142,8 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.wildfly.core:wildfly-io:2.0.10.Final" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jboss.marshalling:jboss-marshalling-river:1.4.10.Final" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jboss.marshalling:jboss-marshalling:1.4.10.Final" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.9.2" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.9.0" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.9.2" level="project" />
   </component>
 </module>
