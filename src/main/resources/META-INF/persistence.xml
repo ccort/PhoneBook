@@ -19,7 +19,7 @@
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL9Dialect"/>
             <!-- Comment the line below in order for data to persist between executions.
                  Use 'create-drop' to drop the tables in the end of the execution        -->
-            <!-- property name="hibernate.hbm2ddl.auto" value="create" /-->
+            <property name="hibernate.hbm2ddl.auto" value="create" />
         </properties>
     </persistence-unit>
 </persistence>

@@ -58,6 +58,18 @@ Finally, provide the database URL (e.g. jdbc:postgresql://localhost:5432/databas
 
 ## Endpoints:
 
+There's a Postman collection included in the project, nonetheless a brief description of each endpoint follows:
+
+GET: http://localhost:8080/PhoneBook/ubi/phonebook/ Lists all contacts in JSON format
+
+GET: http://localhost:8080/PhoneBook/ubi/phonebook/{id} Gets contact with the specific id in JSON format
+
+POST: http://localhost:8080/PhoneBook/ubi/phonebook/ Accepts a new contact in JSON format (Example available in the Postman collection)
+
+DELETE: http://localhost:8080/PhoneBook/ubi/phonebook/{id} Deletes contact with the specific `{id}`
+
+UPDATE: http://localhost:8080/PhoneBook/ubi/phonebook/{id}
+
 ## Run the Project:
 
 Make sure that WildFly is executing and the datasource is configured. Then, perform the deployment with the following command in the project folder: `mvn wildfly:deploy -DskipTests=True`.

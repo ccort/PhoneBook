@@ -42,6 +42,8 @@ public class PhoneBookManagement {
 
     public String updateContact(long id, Contact updatedContact) {
         Contact contact = getContact(id);
+        if(contact == null)
+            return "No contact with the specified id.";
         if(updatedContact.getName() != null)
             contact.setName(updatedContact.getName());
         if(updatedContact.getAddress() != null)

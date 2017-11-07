@@ -45,9 +45,7 @@ public class PhoneBookService {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     public String updateContact(@PathParam("id") long id, Contact updatedContact){
-        logger.info(updatedContact.toString());
         return managePhoneBook.updateContact(id, updatedContact);
-        //return "Update {id} user yet to be implemented. Debug: " + id;
     }
 
 
@@ -55,11 +53,7 @@ public class PhoneBookService {
     //@Path("create_contact")
     @Consumes(MediaType.APPLICATION_JSON)
     public String createNewContact(Contact contact){
-        logger.info(contact.toString());
-        logger.info("Inserting contact...");
         managePhoneBook.addContact(contact);
-        logger.info("Inserted!");
-
         return "created...";
     }
 }
