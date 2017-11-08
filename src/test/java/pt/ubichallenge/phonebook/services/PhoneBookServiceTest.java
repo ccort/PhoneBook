@@ -83,7 +83,11 @@ public class PhoneBookServiceTest {
 
         Response response = target.request().post(Entity.entity(contactJson,MediaType.APPLICATION_JSON));
         assertEquals(Response.Status.OK,response.getStatusInfo());
-        assertEquals("Contact created successfully, URI: ../PhoneBook/ubi/phonebook/1", response.readEntity(String.class));
+        String expectedJson = "{\n" +
+                "  \"message\": \"Contact created successfully\",\n" +
+                "  \"uri\": \"/PhoneBook/ubi/phonebook/1\"\n" +
+                "}";
+        assertEquals(expectedJson, response.readEntity(String.class));
     }
 
     @Test
