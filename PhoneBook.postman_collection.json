@@ -21,7 +21,7 @@
 		{
 			"name": "Get Contact by Id",
 			"request": {
-				"url": "http://localhost:8080/PhoneBook/ubi/phonebook/4",
+				"url": "http://localhost:8080/PhoneBook/ubi/phonebook/1",
 				"method": "GET",
 				"header": [],
 				"body": {},
@@ -32,7 +32,7 @@
 		{
 			"name": "Delete Contact with Id",
 			"request": {
-				"url": "http://localhost:8080/PhoneBook/ubi/phonebook/2",
+				"url": "http://localhost:8080/PhoneBook/ubi/phonebook/1",
 				"method": "DELETE",
 				"header": [],
 				"body": {},
@@ -43,7 +43,7 @@
 		{
 			"name": "Update Contact with Id",
 			"request": {
-				"url": "http://localhost:8080/PhoneBook/ubi/phonebook/5",
+				"url": "http://localhost:8080/PhoneBook/ubi/phonebook/1",
 				"method": "PUT",
 				"header": [
 					{

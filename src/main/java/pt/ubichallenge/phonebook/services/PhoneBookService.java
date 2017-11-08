@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pt.ubichallenge.phonebook.model.Contact;
 import pt.ubichallenge.phonebook.persistence.PhoneBookManagement;
+import pt.ubichallenge.phonebook.util.PhoneBookUtils;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -38,7 +39,8 @@ public class PhoneBookService {
         Contact contact = managePhoneBook.getContact(id);
         if(contact == null) {
             logger.info("Contact does not exist, id: " + id);
-            return Response.noContent().build();
+            String jsonResponse = PhoneBookUtils.createReturnMessageJson("Contact with id: " + id + " not found.");
+            return Response.status(Response.Status.NOT_FOUND).entity(jsonResponse).build();
         }
         else {
             return Response.ok(contact, MediaType.APPLICATION_JSON).build();
@@ -47,40 +49,40 @@ public class PhoneBookService {
 
     @DELETE
     @Path("{id}")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response deleteContact(@PathParam("id") long id){
         logger.info("Delete contact request, id: " + id);
         if(managePhoneBook.deleteContact(id)){
             return Response.noContent().build();
         }
         else {
-            return Response.status(Response.Status.NOT_FOUND).entity("Contact with id: " + id + " not found and therefore not deleted.").build();
+            String jsonResponse = PhoneBookUtils.createReturnMessageJson("Contact with id: " + id + " not found and therefore not deleted.");
+            return Response.status(Response.Status.NOT_FOUND).entity(jsonResponse).build();
         }
     }
 
     @PUT
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response updateContact(@PathParam("id") long id, Contact updatedContact){
         logger.info("Update contact request, id: " + id);
         Contact contact = managePhoneBook.updateContact(id, updatedContact);
         if(contact == null) {
-            return Response.status(Response.Status.NOT_FOUND).entity("Contact with id: " + id + " not found and therefore not updated.").build();
+            String jsonResponse = PhoneBookUtils.createReturnMessageJson("Contact with id: " + id + " not found and therefore not updated.");
+            return Response.status(Response.Status.NOT_FOUND).entity(jsonResponse).build();
         }
         else{
             return Response.noContent().build();
         }
     }
 
-
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createNewContact(Contact contact){
         logger.info("Create contact request");
         long id = managePhoneBook.addContact(contact);
-        String jsonResponse = "{\n" +
-                "  \"message\": \"Contact created successfully\",\n" +
-                "  \"uri\": \"/PhoneBook/ubi/phonebook/" + id + "\"\n" +
-                "}";
+        String jsonResponse = PhoneBookUtils.createReturnMessageJson("Contact created successfully.", "/PhoneBook/ubi/phonebook/" + id);
         return Response.ok(jsonResponse, MediaType.APPLICATION_JSON).build();
     }
 }

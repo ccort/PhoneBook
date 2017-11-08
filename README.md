@@ -19,11 +19,7 @@
 ## Instructions:
 
 ### WildFly Setup
-Start the WildFly server by navigating to the WildFly \bin directory and executing the following script:
-
-`.\standalone.bat`, for Windows
-
-`./standalone.sh`, for Unix-Based systems
+Start the WildFly server by navigating to the WildFly \bin directory and executing the `.\standalone.bat` script.
 
 A management user account has to be created for WildFly. Just run the `.\add-user.bat` script to create one.
 
@@ -51,21 +47,21 @@ Finally, provide the database URL (e.g. jdbc:postgresql://localhost:5432/databas
 
 ## Endpoints:
 
-There's a Postman collection included in the project, nonetheless a brief description of each endpoint follows:
+There is a Postman collection included in the project; nonetheless a brief description of each endpoint follows:
 
 **GET:** `http://localhost:8080/PhoneBook/ubi/phonebook/` Gets all contacts in JSON format and returns a 200 OK
 
-**GET:** `http://localhost:8080/PhoneBook/ubi/phonebook/{id}` Gets contact with the specific `{id}` in JSON format, returns 200 OK on success or a 204 if no contact with the the specific `{id}` is found
+**GET:** `http://localhost:8080/PhoneBook/ubi/phonebook/{id}` Gets contact with the specific `{id}` in JSON format, returns 200 OK on success or a 404 if no contact with the the specific `{id}` is found
 
 **POST:** `http://localhost:8080/PhoneBook/ubi/phonebook/` Accepts a new contact in JSON format and returns 200 OK with a message containing the URI of the newly created contact
 
-**DELETE:** `http://localhost:8080/PhoneBook/ubi/phonebook/{id}` Deletes contact with the specific `{id}`, returns 204 on success, 404 if contact not found
+**DELETE:** `http://localhost:8080/PhoneBook/ubi/phonebook/{id}` Deletes the contact with the specific `{id}`, returns 204 on success, 404 if contact not found
 
-**UPDATE:** `http://localhost:8080/PhoneBook/ubi/phonebook/{id}` Updates contact with the specified id. The updated components of the contact should be sent in JSON format. If fields are omitted the old values remain unchanged. Returns 204 on success or 404 on contact not found
+**UPDATE:** `http://localhost:8080/PhoneBook/ubi/phonebook/{id}` Updates the contact with the specified `{id}`. The updated components of the contact should be sent in JSON format. If fields are omitted the old values remain unchanged. Returns 204 on success or 404 on contact not found
 
 ## Run the Project:
 
-Make sure that WildFly is executing and the datasource is configured. Then, perform the deployment with the following command in the project folder: `mvn wildfly:deploy`, you can also add the `-DskipTests=True` argument to skip tests.
+Make sure that WildFly is running and that the datasource is configured. Then, perform the deployment with the following command in the project folder: `mvn wildfly:deploy` (you can also add the `-DskipTests=True` argument to skip the tests).
 
 ## Undeploy the Project: 
 Type:  `mvn wildfly:undeploy`

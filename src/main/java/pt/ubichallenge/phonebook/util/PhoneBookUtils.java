@@ -8,6 +8,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PhoneBookUtils {
+
+    static public String createReturnMessageJson(String message){
+        ReturnMessageJson json = new ReturnMessageJson();
+        json.setMessage(message);
+        return json.toJson();
+    }
+    static public String createReturnMessageJson(String message, String uri){
+        ReturnMessageJson json = new ReturnMessageJson();
+        json.setMessage(message);
+        json.setUri(uri);
+        return json.toJson();
+    }
+
     static public Contact createSampleContact(){
         Contact contact = new Contact();
         contact.setName("FirstName LastName");

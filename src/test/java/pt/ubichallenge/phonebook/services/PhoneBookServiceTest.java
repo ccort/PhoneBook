@@ -18,6 +18,7 @@ import pt.ubichallenge.phonebook.UbiChallengeApplication;
 import pt.ubichallenge.phonebook.model.Address;
 import pt.ubichallenge.phonebook.model.Contact;
 import pt.ubichallenge.phonebook.model.Phone;
+import pt.ubichallenge.phonebook.util.ReturnMessageJson;
 import pt.ubichallenge.phonebook.persistence.PhoneBookManagement;
 import pt.ubichallenge.phonebook.util.PhoneBookUtils;
 
@@ -51,7 +52,7 @@ public class PhoneBookServiceTest {
     @Deployment(testable = false)
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class, "test-phonebook.war")
-                .addClasses(UbiChallengeApplication.class, PhoneBookService.class, Contact.class, Address.class, Phone.class, PhoneBookManagement.class, PhoneBookUtils.class)
+                .addClasses(UbiChallengeApplication.class, PhoneBookService.class, Contact.class, Address.class, Phone.class, PhoneBookManagement.class, PhoneBookUtils.class, ReturnMessageJson.class)
                 .addAsResource("test-persistence.xml","META-INF/persistence.xml")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
@@ -83,9 +84,9 @@ public class PhoneBookServiceTest {
 
         Response response = target.request().post(Entity.entity(contactJson,MediaType.APPLICATION_JSON));
         assertEquals(Response.Status.OK,response.getStatusInfo());
-        String expectedJson = "{\n" +
-                "  \"message\": \"Contact created successfully\",\n" +
-                "  \"uri\": \"/PhoneBook/ubi/phonebook/1\"\n" +
+        String expectedJson = "{" +
+                "\"message\":\"Contact created successfully.\"," +
+                "\"uri\":\"/PhoneBook/ubi/phonebook/1\"" +
                 "}";
         assertEquals(expectedJson, response.readEntity(String.class));
     }
@@ -151,8 +152,7 @@ public class PhoneBookServiceTest {
 
         String response = target.request().accept(MediaType.APPLICATION_JSON).get(String.class);
         if(response != null) {
-            Contact contact = mapper.readValue(response, Contact.class);
-            return contact;
+            return mapper.readValue(response, Contact.class);
         }
         else{
             return null;
