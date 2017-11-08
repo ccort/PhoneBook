@@ -11,10 +11,10 @@
         <class>pt.ubichallenge.phonebook.model.Address</class>
         <class>pt.ubichallenge.phonebook.model.Phone</class>
         <properties>
-            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
+            <!--property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
             <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/challenge" />
-            <property name="javax.persistence.jdbc.user" value="ubiwhere" />
-            <property name="javax.persistence.jdbc.password" value="ubiwhere" />
+            <property name="javax.persistence.jdbc.user" value="" />
+            <property name="javax.persistence.jdbc.password" value="" /-->
 
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL9Dialect"/>
             <!-- Comment the line below in order for data to persist between executions.

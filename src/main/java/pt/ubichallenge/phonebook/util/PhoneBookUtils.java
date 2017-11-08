@@ -13,7 +13,7 @@ public class PhoneBookUtils {
         contact.setName("FirstName LastName");
 
         Address address = new Address();
-        address.setAddress("Rua, Numero, Coimbra 9999-000");
+        address.setAddress("SampleAddress");
 
         contact.setAddress(address);
 

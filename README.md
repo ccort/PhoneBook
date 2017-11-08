@@ -12,29 +12,22 @@
 
 **[PostgreSQL 10](https://www.postgresql.org/download/)** or another DBMS of your choice
 
-**[IntelliJ Ultimate 2017](https://www.jetbrains.com/idea/download/)**  *(Optional)*  for development but the project should run fine just with Maven
+**[IntelliJ Ultimate 2017](https://www.jetbrains.com/idea/download/)**  *(Optional)*  for development but the project will run fine just with Maven
 
-**[Postman](https://www.getpostman.com/)** for endoint testing
+**[Postman](https://www.getpostman.com/)** for endpoint testing
 
 ## Instructions:
 
-### JDK & Maven Configuration
-Ensure that JDK and Maven are istalled correctly by the `java -version` and `mvn -version` commands. Additionally, verify that they both exist in the system path.
-
 ### WildFly Setup
-Setup the WildFly server by navigating to the WildFly \bin directory and typing the following commands:
+Start the WildFly server by navigating to the WildFly \bin directory and executing the following script:
 
 `.\standalone.bat`, for Windows
 
 `./standalone.sh`, for Unix-Based systems
 
-Before logging in the server console, a management user account has to be created. This can be achieved by the following commands:
+A management user account has to be created for WildFly. Just run the `.\add-user.bat` script to create one.
 
-`.\add-user.bat`, for Windows
-
-`./add-user.sh`, for Unix-Based systems
-
-Follow the instructions present in the terminal and then navigate to the admin panel:  http://localhost:9990/console/ , from where the WildFly control panel can be accessed.
+The WildFly admin panel is accessed by the following link:  http://localhost:9990/console/
 
 ### Database Creation
 
@@ -53,26 +46,26 @@ In the second step, navigate to the `Detected Driver` tab and select the already
 Finally, provide the database URL (e.g. jdbc:postgresql://localhost:5432/database_name), the default username for the created database and the password already defined. 
 
 
-**Note:**(Alternatively,  you can use the default datasource of WildFly that uses **H2:mem - java:jboss/datasources/ExampleDS** but beware that this type of datasource is volatile; it only stays in the memory and is never saved to the disk)
+**Note:**(Alternatively,  you can use the default datasource of WildFly that uses **H2:mem - java:jboss/datasources/ExampleDS** by editing the `<jta-data-source>` tag in resources/META-INF/persistence.xml but beware that this type of datasource is volatile; it only stays in the memory and is never saved to the disk)
 
 
 ## Endpoints:
 
 There's a Postman collection included in the project, nonetheless a brief description of each endpoint follows:
 
-GET: http://localhost:8080/PhoneBook/ubi/phonebook/ Lists all contacts in JSON format
+**GET:** `http://localhost:8080/PhoneBook/ubi/phonebook/` Gets all contacts in JSON format and returns a 200 OK
 
-GET: http://localhost:8080/PhoneBook/ubi/phonebook/{id} Gets contact with the specific id in JSON format
+**GET:** `http://localhost:8080/PhoneBook/ubi/phonebook/{id}` Gets contact with the specific `{id}` in JSON format, returns 200 OK on success or a 204 if no contact with the the specific `{id}` is found
 
-POST: http://localhost:8080/PhoneBook/ubi/phonebook/ Accepts a new contact in JSON format (Example available in the Postman collection)
+**POST:** `http://localhost:8080/PhoneBook/ubi/phonebook/` Accepts a new contact in JSON format and returns 200 OK with a message containing the URI of the newly created contact
 
-DELETE: http://localhost:8080/PhoneBook/ubi/phonebook/{id} Deletes contact with the specific `{id}`
+**DELETE:** `http://localhost:8080/PhoneBook/ubi/phonebook/{id}` Deletes contact with the specific `{id}`, returns 204 on success, 404 if contact not found
 
-UPDATE: http://localhost:8080/PhoneBook/ubi/phonebook/{id}
+**UPDATE:** `http://localhost:8080/PhoneBook/ubi/phonebook/{id}` Updates contact with the specified id. The updated components of the contact should be sent in JSON format. If fields are omitted the old values remain unchanged. Returns 204 on success or 404 on contact not found
 
 ## Run the Project:
 
-Make sure that WildFly is executing and the datasource is configured. Then, perform the deployment with the following command in the project folder: `mvn wildfly:deploy -DskipTests=True`.
+Make sure that WildFly is executing and the datasource is configured. Then, perform the deployment with the following command in the project folder: `mvn wildfly:deploy`, you can also add the `-DskipTests=True` argument to skip tests.
 
 ## Undeploy the Project: 
 Type:  `mvn wildfly:undeploy`
