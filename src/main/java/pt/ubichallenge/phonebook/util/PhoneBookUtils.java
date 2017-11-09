@@ -14,6 +14,7 @@ public class PhoneBookUtils {
         json.setMessage(message);
         return json.toJson();
     }
+
     static public String createReturnMessageJson(String message, String uri){
         ReturnMessageJson json = new ReturnMessageJson();
         json.setMessage(message);
@@ -21,6 +22,7 @@ public class PhoneBookUtils {
         return json.toJson();
     }
 
+    // Creation of a sample contact mainly to use in tests
     static public Contact createSampleContact(){
         Contact contact = new Contact();
         contact.setName("FirstName LastName");

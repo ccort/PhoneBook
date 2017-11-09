@@ -67,6 +67,10 @@ public class PhoneBookService {
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateContact(@PathParam("id") long id, Contact updatedContact){
         logger.info("Update contact request, id: " + id);
+        if(updatedContact == null){
+            String jsonResponse = PhoneBookUtils.createReturnMessageJson("No JSON Contact sent in the body message.");
+            return Response.status(Response.Status.BAD_REQUEST).entity(jsonResponse).build();
+        }
         Contact contact = managePhoneBook.updateContact(id, updatedContact);
         if(contact == null) {
             String jsonResponse = PhoneBookUtils.createReturnMessageJson("Contact with id: " + id + " not found and therefore not updated.");
@@ -79,8 +83,19 @@ public class PhoneBookService {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response createNewContact(Contact contact){
         logger.info("Create contact request");
+        if(contact == null){
+            logger.info("Contact not added, contact is null");
+            String jsonResponse = PhoneBookUtils.createReturnMessageJson("No JSON Contact sent in the body message.");
+            return Response.status(Response.Status.BAD_REQUEST).entity(jsonResponse).build();
+        }
+        if(contact.getName() == null){
+            logger.info("Contact not added, contact does not have a name");
+            String jsonResponse = PhoneBookUtils.createReturnMessageJson("The Contact needs to at least have a name.");
+            return Response.status(Response.Status.BAD_REQUEST).entity(jsonResponse).build();
+        }
         long id = managePhoneBook.addContact(contact);
         String jsonResponse = PhoneBookUtils.createReturnMessageJson("Contact created successfully.", "/PhoneBook/ubi/phonebook/" + id);
         return Response.ok(jsonResponse, MediaType.APPLICATION_JSON).build();
