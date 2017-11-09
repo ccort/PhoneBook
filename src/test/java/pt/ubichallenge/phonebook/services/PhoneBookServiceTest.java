@@ -62,7 +62,7 @@ public class PhoneBookServiceTest {
 
     @Before
     public void setUp() throws Exception{
-        target = createNewWebTarget("1");
+        target = createNewWebTarget("");
         mapper = new ObjectMapper();
     }
 
@@ -71,7 +71,6 @@ public class PhoneBookServiceTest {
 
     @Test
     public void test1GetAllContactsEmpty() throws Exception {
-        target = client.target(URI.create(new URL(base, endpoint).toExternalForm()));
 
         Response response = target.request().get();
 
@@ -81,7 +80,6 @@ public class PhoneBookServiceTest {
 
     @Test
     public void test2CreateNewContact() throws Exception {
-        target = client.target(URI.create(new URL(base, endpoint).toExternalForm()));
         Contact contact = PhoneBookUtils.createSampleContact();
         String contactJson = mapper.writeValueAsString(contact);
 
@@ -96,6 +94,9 @@ public class PhoneBookServiceTest {
 
     @Test
     public void test3GetContact() throws Exception {
+        String id = "1";
+        target = createNewWebTarget(id);
+
         Response response = target.request().accept(MediaType.APPLICATION_JSON).get();
         if(response != null) {
             assertEquals(Response.Status.OK, response.getStatusInfo());
@@ -111,6 +112,8 @@ public class PhoneBookServiceTest {
 
     @Test
     public void test4UpdateExistingContact() throws Exception {
+        String id = "1";
+        target = createNewWebTarget(id);
 
         Contact contact = PhoneBookUtils.createSampleContact();
 
@@ -132,7 +135,7 @@ public class PhoneBookServiceTest {
     @Test
     public void test5UpdateNonExistingContact() throws Exception {
         String id = "20";
-        target = client.target(URI.create(new URL(base, endpoint + "/" + id).toExternalForm()));
+        target = createNewWebTarget(id);
 
         Contact contact = PhoneBookUtils.createSampleContact();
 
@@ -146,6 +149,8 @@ public class PhoneBookServiceTest {
 
     @Test
     public void test6DeleteContact() throws Exception {
+        String id = "1";
+        target = createNewWebTarget(id);
 
         Response response = target.request().delete();
 
@@ -171,6 +176,34 @@ public class PhoneBookServiceTest {
 
         // Asserts that the correct number of contacts are added
         assertEquals(numberOfContactsToAdd, contacts.size());
+    }
+
+    @Test
+    public void test8CreateInvalidContactWithNulls() throws Exception {
+        Contact contact = new Contact();
+        String contactJson = mapper.writeValueAsString(contact);
+
+        Response response = target.request().post(Entity.entity(contactJson,MediaType.APPLICATION_JSON));
+
+        // Checks the Status code and the message
+        assertEquals(Response.Status.BAD_REQUEST,response.getStatusInfo());
+        String expectedJson = "{\"message\":\"Contact not added, contact does not have all fields filled and/or it has empty fields\"}";
+        assertEquals(expectedJson, response.readEntity(String.class));
+    }
+
+    @Test
+    public void test8CreateInvalidContactWithEmptyStrings() throws Exception {
+        Contact contact = PhoneBookUtils.createSampleContact();
+        contact.setName("");
+        contact.getAddress().setAddress("");
+        String contactJson = mapper.writeValueAsString(contact);
+
+        Response response = target.request().post(Entity.entity(contactJson,MediaType.APPLICATION_JSON));
+
+        // Checks the Status code and the message
+        assertEquals(Response.Status.BAD_REQUEST,response.getStatusInfo());
+        String expectedJson = "{\"message\":\"Contact not added, contact does not have all fields filled and/or it has empty fields\"}";
+        assertEquals(expectedJson, response.readEntity(String.class));
     }
 
     //I need this method to facilitate the creation of WebTargets between requests
