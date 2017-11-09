@@ -34,7 +34,7 @@ public class PhoneBookService {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getContact(@PathParam("id") long id){
+    public Response getContactById(@PathParam("id") long id){
         logger.info("Get contact request, id: " + id);
         Contact contact = managePhoneBook.getContact(id);
         if(contact == null) {
@@ -50,7 +50,7 @@ public class PhoneBookService {
     @DELETE
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteContact(@PathParam("id") long id){
+    public Response deleteContactById(@PathParam("id") long id){
         logger.info("Delete contact request, id: " + id);
         if(managePhoneBook.deleteContact(id)){
             return Response.noContent().build();
@@ -65,7 +65,7 @@ public class PhoneBookService {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateContact(@PathParam("id") long id, Contact updatedContact){
+    public Response updateContactById(@PathParam("id") long id, Contact updatedContact){
         logger.info("Update contact request, id: " + id);
         if(updatedContact == null){
             String jsonResponse = PhoneBookUtils.createReturnMessageJson("No JSON Contact sent in the body message.");
@@ -91,9 +91,10 @@ public class PhoneBookService {
             String jsonResponse = PhoneBookUtils.createReturnMessageJson("No JSON Contact sent in the body message.");
             return Response.status(Response.Status.BAD_REQUEST).entity(jsonResponse).build();
         }
-        if(contact.getName() == null){
-            logger.info("Contact not added, contact does not have a name");
-            String jsonResponse = PhoneBookUtils.createReturnMessageJson("The Contact needs to at least have a name.");
+        if(!PhoneBookUtils.isContactValid(contact)){
+            String error = "Contact not added, contact does not have all fields filled and/or it has empty fields";
+            logger.info(error);
+            String jsonResponse = PhoneBookUtils.createReturnMessageJson(error);
             return Response.status(Response.Status.BAD_REQUEST).entity(jsonResponse).build();
         }
         long id = managePhoneBook.addContact(contact);

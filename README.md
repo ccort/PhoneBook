@@ -53,7 +53,7 @@ There is a Postman collection included in the project; nonetheless a brief descr
 
 **GET:** `http://localhost:8080/PhoneBook/ubi/phonebook/{id}` Gets contact with the specific `{id}` in JSON format, returns 200 OK on success or a 404 if no contact with the the specific `{id}` is found
 
-**POST:** `http://localhost:8080/PhoneBook/ubi/phonebook/` Accepts a new contact in JSON format and returns 200 OK with a message containing the URI of the newly created contact
+**POST:** `http://localhost:8080/PhoneBook/ubi/phonebook/` Accepts a new contact in JSON format and returns 200 OK with a message containing the URI of the newly created contact. If no body content is sent it returns a Bad Request.
 
 **DELETE:** `http://localhost:8080/PhoneBook/ubi/phonebook/{id}` Deletes the contact with the specific `{id}`, returns 204 on success, 404 if contact not found
 

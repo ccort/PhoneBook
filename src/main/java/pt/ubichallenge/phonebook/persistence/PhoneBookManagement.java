@@ -3,6 +3,7 @@ package pt.ubichallenge.phonebook.persistence;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pt.ubichallenge.phonebook.model.Contact;
+import pt.ubichallenge.phonebook.util.PhoneBookUtils;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -21,6 +22,8 @@ public class PhoneBookManagement {
     public long addContact(Contact contact){
         logger.info("Adding new contact...");
         entityManager.persist(contact);
+
+        // Using flush() at this point forces the database to update and assign an Id to contact
         entityManager.flush();
         logger.info("Contact added with id: " + contact.getId());
         return contact.getId();
@@ -57,12 +60,19 @@ public class PhoneBookManagement {
             logger.info("Can't update, contact not found, id:" + id);
             return null;
         }
+
+        // Checks if any field is null or contains an empty string, if so, that field is not updated
         if(updatedContact.getName() != null)
-            contact.setName(updatedContact.getName());
+            if(!PhoneBookUtils.isStringEmpty(updatedContact.getName()))
+                contact.setName(updatedContact.getName());
         if(updatedContact.getAddress() != null)
-            contact.setAddress(updatedContact.getAddress());
-        if(updatedContact.getPhones() != null)
-            contact.setPhones(updatedContact.getPhones());
+            if(updatedContact.getAddress().getAddress() != null)
+                if(!PhoneBookUtils.isStringEmpty(updatedContact.getAddress().getAddress()))
+                    contact.setAddress(updatedContact.getAddress());
+        if(updatedContact.getPhones() != null) {
+            if(PhoneBookUtils.arePhonesValid(updatedContact.getPhones()))
+                contact.setPhones(updatedContact.getPhones());
+        }
         logger.info("Contact updated, id: " + id);
         return contact;
     }
