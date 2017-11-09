@@ -57,12 +57,6 @@
             <version>1.7.25</version>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-client</artifactId>
             <version>3.0.2.Final</version>
@@ -72,16 +66,14 @@
             <artifactId>resteasy-jettison-provider</artifactId>
             <version>3.0.2.Final</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.jboss.arquillian.core/arquillian-core-api -->
         <dependency>
             <groupId>org.jboss.arquillian.core</groupId>
             <artifactId>arquillian-core-api</artifactId>
             <version>1.1.13.Final</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.jboss.arquillian.junit/arquillian-junit-container -->
         <dependency>
-            <groupId>org.jboss.arquillian.junit</groupId>
-            <artifactId>arquillian-junit-container</artifactId>
+            <groupId>org.jboss.arquillian.testng</groupId>
+            <artifactId>arquillian-testng-container</artifactId>
             <version>1.1.13.Final</version>
             <scope>test</scope>
         </dependency>
@@ -103,12 +95,16 @@
             <version>2.0.0.Final</version>
             <scope>test</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>2.9.2</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>6.11</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>

@@ -3,18 +3,15 @@ package pt.ubichallenge.phonebook.services;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.testng.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Before;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 import pt.ubichallenge.phonebook.UbiChallengeApplication;
 import pt.ubichallenge.phonebook.model.Address;
 import pt.ubichallenge.phonebook.model.Contact;
@@ -35,12 +32,10 @@ import java.net.URI;
 import java.net.URL;
 import java.util.List;
 
-import static org.hamcrest.core.IsInstanceOf.instanceOf;
-import static org.junit.Assert.*;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.fail;
 
-@RunWith(Arquillian.class)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class PhoneBookServiceTest {
+public class PhoneBookServiceTest extends Arquillian {
 
     private static final Logger logger = LoggerFactory.getLogger(PhoneBookServiceTest.class);
 
@@ -52,6 +47,7 @@ public class PhoneBookServiceTest {
 
     private String endpoint = "ubi/phonebook/";
     private ObjectMapper mapper;
+
     @Deployment(testable = false)
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class, "test-phonebook.war")
@@ -60,7 +56,7 @@ public class PhoneBookServiceTest {
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
-    @Before
+    @BeforeMethod
     public void setUp() throws Exception{
         target = createNewWebTarget("");
         mapper = new ObjectMapper();
@@ -68,7 +64,6 @@ public class PhoneBookServiceTest {
 
     // These tests are meant to be run with this specific method order since some
     // tests will be expecting changes performed by previous tests
-
     @Test
     public void test1GetAllContactsEmpty() throws Exception {
 
@@ -78,7 +73,7 @@ public class PhoneBookServiceTest {
         assertEquals("[]",response.readEntity(String.class));
     }
 
-    @Test
+    @Test(dependsOnMethods = {"test1GetAllContactsEmpty"})
     public void test2CreateNewContact() throws Exception {
         Contact contact = PhoneBookUtils.createSampleContact();
         String contactJson = mapper.writeValueAsString(contact);
@@ -92,7 +87,7 @@ public class PhoneBookServiceTest {
         assertEquals(expectedJson, response.readEntity(String.class));
     }
 
-    @Test
+    @Test(dependsOnMethods = {"test2CreateNewContact"})
     public void test3GetContact() throws Exception {
         String id = "1";
         target = createNewWebTarget(id);
@@ -103,14 +98,14 @@ public class PhoneBookServiceTest {
             Contact contact = mapper.readValue(response.readEntity(String.class), Contact.class);
 
             // Asserts that a contact is indeed returned in the response
-            assertThat(contact, instanceOf(Contact.class));
+            assertEquals(contact.getClass(), Contact.class);
         }
         else{
             fail("Response is null");
         }
     }
 
-    @Test
+    @Test(dependsOnMethods = {"test3GetContact"})
     public void test4UpdateExistingContact() throws Exception {
         String id = "1";
         target = createNewWebTarget(id);
@@ -132,7 +127,7 @@ public class PhoneBookServiceTest {
         assertEquals(Response.Status.NO_CONTENT, response.getStatusInfo());
     }
 
-    @Test
+    @Test(dependsOnMethods = {"test4UpdateExistingContact"})
     public void test5UpdateNonExistingContact() throws Exception {
         String id = "20";
         target = createNewWebTarget(id);
@@ -147,7 +142,7 @@ public class PhoneBookServiceTest {
         assertEquals(Response.Status.NOT_FOUND, response.getStatusInfo());
     }
 
-    @Test
+    @Test(dependsOnMethods = {"test5UpdateNonExistingContact"})
     public void test6DeleteContact() throws Exception {
         String id = "1";
         target = createNewWebTarget(id);
@@ -159,7 +154,7 @@ public class PhoneBookServiceTest {
 
     }
 
-    @Test
+    @Test(dependsOnMethods = {"test6DeleteContact"})
     public void test7CreateMultipleContactsAndReturnThemAll() throws Exception {
         int numberOfContactsToAdd = 3;
         String contactJson = mapper.writeValueAsString(PhoneBookUtils.createSampleContact());
@@ -192,7 +187,7 @@ public class PhoneBookServiceTest {
     }
 
     @Test
-    public void test8CreateInvalidContactWithEmptyStrings() throws Exception {
+    public void test9CreateInvalidContactWithEmptyStrings() throws Exception {
         Contact contact = PhoneBookUtils.createSampleContact();
         contact.setName("");
         contact.getAddress().setAddress("");
@@ -207,15 +202,15 @@ public class PhoneBookServiceTest {
     }
 
     //I need this method to facilitate the creation of WebTargets between requests
-    public WebTarget createNewWebTarget(String id) throws MalformedURLException {
+    private WebTarget createNewWebTarget(String id) throws MalformedURLException {
 
         client = ClientBuilder.newClient();
         target = client.target(URI.create(new URL(base, endpoint + id).toExternalForm()));
         return target;
     }
 
-    public Contact getContactWithJerseyClient(String id) throws IOException {
-        target = createNewWebTarget(""+id);
+    private Contact getContactWithJerseyClient(String id) throws IOException {
+        target = createNewWebTarget(id);
 
         String response = target.request().accept(MediaType.APPLICATION_JSON).get(String.class);
         if(response != null) {
